@@ -13,12 +13,11 @@ import COLORS from '../../conts/colors';
 import Button from '../../components/Button';
 import Input from '../../components/Input';
 import Loader from '../../components/Loader';
-
-const RegistrationScreen = ({navigation}) => {
+import { Login } from '../../service';
+const RegistrationScreen = ({ navigation }) => {
   const [inputs, setInputs] = React.useState({
     email: '',
-    fullname: '',
-    phone: '',
+    username: '',
     password: '',
   });
   const [errors, setErrors] = React.useState({});
@@ -36,15 +35,12 @@ const RegistrationScreen = ({navigation}) => {
       isValid = false;
     }
 
-    if (!inputs.fullname) {
-      handleError('Please input fullname', 'fullname');
+    if (!inputs.username) {
+      handleError('Please input username', 'username');
       isValid = false;
     }
 
-    if (!inputs.phone) {
-      handleError('Please input phone number', 'phone');
-      isValid = false;
-    }
+
 
     if (!inputs.password) {
       handleError('Please input password', 'password');
@@ -59,37 +55,44 @@ const RegistrationScreen = ({navigation}) => {
     }
   };
 
-  const register = () => {
-    setLoading(true);
-    setTimeout(() => {
-      try {
-        setLoading(false);
-        AsyncStorage.setItem('userData', JSON.stringify(inputs));
-        navigation.navigate('LoginScreen');
-      } catch (error) {
-        Alert.alert('Error', 'Something went wrong');
-      }
-    }, 3000);
+  const register = async () => {
+    var registre = await Login.Register({ ...inputs, "action": "new_user", })
+    alert( registre)
+    handleOnchange("", 'password')
+    handleOnchange("", 'email')
+    handleOnchange("", 'password')
+
+  
+    // setLoading(true);
+    // setTimeout(() => {
+    //   try {
+    //     setLoading(false);
+    //     AsyncStorage.setItem('userData', JSON.stringify(inputs));
+    //     navigation.navigate('LoginScreen');
+    //   } catch (error) {
+    //     Alert.alert('Error', 'Something went wrong');
+    //   }
+    // }, 3000);
   };
 
   const handleOnchange = (text, input) => {
-    setInputs(prevState => ({...prevState, [input]: text}));
+    setInputs(prevState => ({ ...prevState, [input]: text }));
   };
   const handleError = (error, input) => {
-    setErrors(prevState => ({...prevState, [input]: error}));
+    setErrors(prevState => ({ ...prevState, [input]: error }));
   };
   return (
-    <SafeAreaView style={{backgroundColor: COLORS.white, flex: 1}}>
+    <SafeAreaView style={{ backgroundColor: COLORS.white, flex: 1 }}>
       <Loader visible={loading} />
       <ScrollView
-        contentContainerStyle={{paddingTop: 50, paddingHorizontal: 20}}>
-        <Text style={{color: COLORS.black, fontSize: 40, fontWeight: 'bold'}}>
+        contentContainerStyle={{ paddingTop: 50, paddingHorizontal: 20 }}>
+        <Text style={{ color: COLORS.black, fontSize: 40, fontWeight: 'bold' }}>
           Register
         </Text>
-        <Text style={{color: COLORS.grey, fontSize: 18, marginVertical: 10}}>
+        <Text style={{ color: COLORS.grey, fontSize: 18, marginVertical: 10 }}>
           Enter Your Details to Register
         </Text>
-        <View style={{marginVertical: 20}}>
+        <View style={{ marginVertical: 20 }}>
           <Input
             onChangeText={text => handleOnchange(text, 'email')}
             onFocus={() => handleError(null, 'email')}
@@ -100,23 +103,15 @@ const RegistrationScreen = ({navigation}) => {
           />
 
           <Input
-            onChangeText={text => handleOnchange(text, 'fullname')}
-            onFocus={() => handleError(null, 'fullname')}
+            onChangeText={text => handleOnchange(text, 'username')}
+            onFocus={() => handleError(null, 'username')}
             iconName="account-outline"
             label="Full Name"
             placeholder="Enter your full name"
-            error={errors.fullname}
+            error={errors.username}
           />
 
-          <Input
-            keyboardType="numeric"
-            onChangeText={text => handleOnchange(text, 'phone')}
-            onFocus={() => handleError(null, 'phone')}
-            iconName="phone-outline"
-            label="Phone Number"
-            placeholder="Enter your phone no"
-            error={errors.phone}
-          />
+
           <Input
             onChangeText={text => handleOnchange(text, 'password')}
             onFocus={() => handleError(null, 'password')}

@@ -1,7 +1,7 @@
 import { createStackNavigator } from '@react-navigation/stack'
 
 import { screens } from '../RouteItems'
-import React, {useContext} from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -15,21 +15,33 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import styles from '../../productDetailStyle';
-import {AuthContext} from '../../context';
+import { AuthContext } from '../../context';
 const Stack = createStackNavigator()
 
- function ProductDetail(props) {
-  const {state, dispatch} = useContext(AuthContext);
+function ProductDetail(props) {
+  const { state, dispatch } = useContext(AuthContext);
   const furniture = props.route?.params;
+  const [pstationcharge, setpstationcharge] = useState({})
+
+  useEffect(() => {
+
+    console.log("propsss", props.route.params.pcharge.image)
+    setpstationcharge(props.route.params.pcharge)
+    const unsubscribe = props.navigation.addListener('focus', () => {
+
+      console.log(new Date());
+
+    });
+  }, [props])
 
   const handleBackButton = () => {
-    navigation?.goBack();
+    props.navigation.navigate('MyRewardsStack')
   };
 
   const handleNoInCart = (type) => {
     dispatch({
       type: 'addToCart',
-      payload: {furniture, type},
+      payload: { furniture, type },
     });
   };
 
@@ -63,7 +75,7 @@ const Stack = createStackNavigator()
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.productDetailSection}>
             <Image
-              source={require('../../assets/car.png')}
+              source={{ uri: pstationcharge.image }}
               style={styles.productImage}
             />
             <View style={styles.productDetailRow}>
@@ -72,16 +84,16 @@ const Stack = createStackNavigator()
                   numberOfLines={1}
                   ellipsizeMode="tail"
                   style={styles.productDetailName}>
-                  La prise Combo CCS
+                  {pstationcharge.name}
                 </Text>
                 <Text
-                  numberOfLines={2}
+                  numberOfLines={5}
                   ellipsizeMode="tail"
                   style={styles.productDetailType}>
-                  Monophasé
+                  {pstationcharge.type}
                 </Text>
               </View>
-              <Text style={styles.productDetailPrice}>$30</Text>
+              <Text style={styles.productDetailPrice}>${pstationcharge.price}</Text>
             </View>
             <Text style={styles.productTitleText}>Quantity</Text>
             <View style={styles.productQuantityRow}>
@@ -96,9 +108,16 @@ const Stack = createStackNavigator()
               </TouchableOpacity>
             </View>
             <Text style={styles.productTitleText}>Description</Text>
-            <Text style={styles.productDescription}>
-              here some description
+            <Text style={styles.productDescription} >
+              {pstationcharge.description}
             </Text>
+            {pstationcharge.availability && pstationcharge.availability.map((e) => (
+              <View style={{alignItems:'center'}} >
+
+                <Text  > {e.from} -->{e.to} </Text>
+              </View>
+
+            ))}
           </View>
         </ScrollView>
         <TouchableOpacity
@@ -115,14 +134,6 @@ const Stack = createStackNavigator()
 
 
 
-const BookStackNavigator = () => {
-  return (
-    <Stack.Navigator screenOptions={{
-      headerShown: false,
-    }}>
-      <Stack.Screen name={screens.Book} component={ProductDetail} />
-    </Stack.Navigator>
-  )
-}
 
-export default BookStackNavigator
+
+export default ProductDetail

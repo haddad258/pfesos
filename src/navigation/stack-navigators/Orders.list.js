@@ -84,7 +84,7 @@ function Home(props) {
 
   return (<View style={{ marginTop: 20 }}>
     <View>
-      <Text style={{ fontWeight: 'bold', color: COLORS.dark, fontSize: 17, textAlign: "center" }} >Stations-Service</Text>
+      <Text style={{ fontWeight: 'bold', color: COLORS.dark, fontSize: 17, textAlign: "center" }} >orderlist</Text>
     </View>
 
 
@@ -103,7 +103,7 @@ function Home(props) {
 
 
 
-const MyRewardsStackNavigator = () => {
+const OrdersList = () => {
   return (
     <Stack.Navigator screenOptions={{
       headerShown: false,
@@ -174,4 +174,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MyRewardsStackNavigator
+export default OrdersList

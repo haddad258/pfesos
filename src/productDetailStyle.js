@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
   },
   productDescription: {
     opacity: 0.6,
-    fontSize: 13,
+    fontSize: 10,
     lineHeight: 18
   },
 });

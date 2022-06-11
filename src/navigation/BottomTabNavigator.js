@@ -7,6 +7,7 @@ import BookStackNavigator from './stack-navigators/BookStackNavigator'
 import ContactStackNavigator from './stack-navigators/ContactStackNavigator'
 import MyRewardsStackNavigator from './stack-navigators/MyRewardsStackNavigator'
 import LocationsStackNavigator from './stack-navigators/LocationsStackNavigator'
+import OrdersList from './stack-navigators/Orders.list'
 import { routes, screens } from './RouteItems'
 
 const Tab = createBottomTabNavigator()
@@ -44,6 +45,8 @@ const BottomTabNavigator = () => {
       <Tab.Screen name={screens.ContactStack} component={ContactStackNavigator} />
 
       <Tab.Screen name={screens.MyRewardsStack} component={MyRewardsStackNavigator} />
+      <Tab.Screen name={screens.OrdersListstack} component={OrdersList} />
+      
     </Tab.Navigator>
   )
 }

@@ -1,7 +1,8 @@
 import * as React from 'react'
-import { View, StyleSheet, Image, Text, TouchableOpacity } from 'react-native'
+import { View, StyleSheet, Image, Text, TouchableOpacity,NativeModules } from 'react-native'
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer'
 import Icon from 'react-native-vector-icons/FontAwesome'
+import AsyncStorage from '@react-native-community/async-storage';
 
 import BottomTabNavigator from './BottomTabNavigator'
 import { routes, screens } from './RouteItems'
@@ -10,8 +11,17 @@ const Drawer = createDrawerNavigator()
 
 const CustomDrawerContent = (props) => {
   const currentRouteName = props.nav()?.getCurrentRoute()?.name
+  const logout = async()=>{
+     await  AsyncStorage.removeItem('userData')      
+
+
+  }
+ 
+
+  
   return (
     <DrawerContentScrollView {...props}>
+
       {
         routes.filter(route => route.showInDrawer).map((route) => {
           const focusedRoute = routes.find(r => r.name === currentRouteName)
@@ -23,7 +33,7 @@ const CustomDrawerContent = (props) => {
               key={route.name}
               label={() => (
                 <Text style={true ? styles.drawerLabelFocused : styles.drawerLabel}>
-                  {route.title}
+                  <Icon name={route.nameicon} size={20} color={focused ? '#77ec69' : '#000'} /> {route.title}
                 </Text>
               )}
               onPress={() => props.navigation.navigate(route.name)}
@@ -32,6 +42,17 @@ const CustomDrawerContent = (props) => {
           )
         })
       }
+         <DrawerItem
+              key={"out"}
+              label={() => (
+                <Text style={true ? styles.drawerLabelFocused : styles.drawerLabel}>
+                  <Icon name="arrow-circle-left" size={23} color={'#77ec69'} />log out
+                </Text>
+              )}
+              onPress={() => logout()}
+              style={[styles.drawerItem]}
+            />
+           
     </DrawerContentScrollView>
   )
 }
@@ -54,13 +75,13 @@ const DrawerNavigator = ({ nav }) => {
     >
       <Drawer.Screen name={screens.HomeTab} component={BottomTabNavigator} options={{
         title: 'Home',
-        headerTitle: () => <Image style={{width:120 , height:30}}  source={require('../assets/logo.jpeg')} />,
+        headerTitle: () => <Image style={{ width: 120, height: 30 }} source={require('../assets/logo.jpeg')} />,
         headerRight: () => (
           <View style={styles.headerRight}>
             <Icon name="bell" size={30} color="#000000" />
           </View>
         ),
-      }}/>
+      }} />
     </Drawer.Navigator>
   )
 }

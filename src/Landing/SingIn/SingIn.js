@@ -5,19 +5,19 @@ import Button from '../../components/Button';
 import Input from '../../components/Input';
 import AsyncStorage from '@react-native-community/async-storage';
 /* import Loader from './components/Loader'; */
+import { Login } from '../../service'
 
 const LoginScreen = ({ navigation }) => {
-  const [inputs, setInputs] = React.useState({ email: '', password: '' });
+  const [inputs, setInputs] = React.useState({ login: 'migo', password: '12654' });
   const [errors, setErrors] = React.useState({});
   const [loading, setLoading] = React.useState(true);
 
   const validate = async () => {
-    login();
 
     Keyboard.dismiss();
     let isValid = true;
-    if (!inputs.email) {
-      handleError('Please input email', 'email');
+    if (!inputs.login) {
+      handleError('Please input login', 'login');
       isValid = false;
     }
     if (!inputs.password) {
@@ -29,8 +29,28 @@ const LoginScreen = ({ navigation }) => {
     }
   };
 
-  const login = () => {
-    navigation.navigate('AppMain');
+  const login = async () => {
+    //  navigation.navigate('');
+
+    var t = await Login.Login({ ...inputs, "action": "auth", })
+    console.log(typeof t)
+    if (t.id) {
+      console.log(t.token)
+      try {
+        await AsyncStorage.setItem('userData', t.token)
+
+        var tmn = await AsyncStorage.getItem('userData')
+        navigation.navigate('AppMain');
+
+        console.log(tmn)
+
+
+      } catch (error) {
+
+      }
+
+    }
+
     // setLoading(true);
     // setTimeout(async () => {
     //   setLoading(false);
@@ -38,10 +58,10 @@ const LoginScreen = ({ navigation }) => {
     //   if (userData) {
     //     userData = JSON.parse(userData);
     //     if (
-    //       inputs.email == userData.email &&
+    //       inputs.login == userData.login &&
     //       inputs.password == userData.password
     //     ) {
-    //       navigation.navigate('HomeScreen');
+    //      
     //       AsyncStorage.setItem(
     //         'userData',
     //         JSON.stringify({...userData, loggedIn: true}),
@@ -66,8 +86,9 @@ const LoginScreen = ({ navigation }) => {
 
     <SafeAreaView style={{ backgroundColor: COLORS.white, flex: 1 }}>
       {/* <Loader visible={loading} /> */}
-      <View style={{ paddingTop: 50, paddingHorizontal: 20 }}>
-        <Image style={{ width: 320, height: 150 }} source={require('../../assets/logo.jpeg')} />
+      <Image style={{ width: 360, height: 150, alignItems: 'center', margin: 10 }} source={require('../../assets/logo.jpeg')} />
+
+      <View style={{ paddingTop: 50, paddingHorizontal: 10 }}>
 
         <Text style={{ color: COLORS.black, fontSize: 40, fontWeight: 'bold' }}>
           Log In
@@ -77,12 +98,12 @@ const LoginScreen = ({ navigation }) => {
         </Text>
         <View style={{ marginVertical: 20 }}>
           <Input
-            onChangeText={text => handleOnchange(text, 'email')}
-            onFocus={() => handleError(null, 'email')}
+            onChangeText={(text) => handleOnchange(text, 'login')}
+            onFocus={() => handleError(null, 'login')}
             iconName="email-outline"
-            label="Email"
-            placeholder="Enter your email address"
-            error={errors.email}
+            label="login"
+            placeholder="Enter your login address"
+            error={errors.login}
           />
           <Input
             onChangeText={text => handleOnchange(text, 'password')}

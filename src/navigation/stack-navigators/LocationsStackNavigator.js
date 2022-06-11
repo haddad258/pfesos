@@ -1,131 +1,102 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { createStackNavigator } from '@react-navigation/stack'
 
 import { screens } from '../RouteItems'
 
-
-import { View, Text, SafeAreaView, Keyboard, Image } from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import { View, Text, SafeAreaView, ScrollView, FlatList,TouchableOpacity,StyleSheet ,Pressable,RefreshControl} from 'react-native';
 import COLORS from '../../conts/colors';
-import Button from '../../components/Button';
-import Input from '../../components/Input';
-import AsyncStorage from '@react-native-community/async-storage';
-/* import Loader from './components/Loader'; */
+import { Cars_Managment, MangementToken } from '../../service'
+import AddCar from './Add.Car'
 const Stack = createStackNavigator()
 
-const LoginScreen = ({ navigation }) => {
-  const [inputs, setInputs] = React.useState({ email: '', password: '' });
-  const [errors, setErrors] = React.useState({});
-  const [loading, setLoading] = React.useState(true);
+function LoginScreen() {
+  const [Cars, setCars] = useState([])
+const [refreshing,setrefreshing]=useState(false)
+  useEffect(() => {
 
-  const validate = async () => {
-    login();
+    getlistCars()
+  }, [])
+  const getlistCars = async () => {
+    setrefreshing(true)
 
-    Keyboard.dismiss();
-    let isValid = true;
-    if (!inputs.email) {
-      handleError('Please input email', 'email');
-      isValid = false;
-    }
-    if (!inputs.password) {
-      handleError('Please input password', 'password');
-      isValid = false;
-    }
-    if (isValid) {
-      login();
-    }
-  };
+    var token = await MangementToken.GetConfigSession()
+    console.log("getlistCars", token)
+    var list = await Cars_Managment.ListCars({
+      "action": "mycars",
+      "token": token,
+    })
+    console.log("ListCars", list)
+    setCars(JSON.parse(list))
+    setrefreshing(false)
+  }
+  const renderItem = ({ item }) => (
+    <TouchableOpacity
+    onPress={() =>console.log(item)}
+  >
+    <Text> item.brand</Text>
+    </TouchableOpacity>
+  )
+  const Card = ({item}) => {
+    return (
+      <Pressable
+        activeOpacity={15}
+        onPress={() =>getlistCars() }
+   
+    style={{ padding:2}}>
+        <View style={style.card}>
+          {/* item image */}
+          <View style={{marginTop: 10}}>
+            {/* Title and price container */}
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+              }}>
+              <Text style={{fontSize: 16, fontWeight: 'bold'}}>
+                {item.brand}
+              </Text>
+              <Text
+                style={{fontWeight: 'bold', color: COLORS.blue, fontSize: 16}}>
+               {item.registration}
+              </Text>
+              
+            </View>
 
-  const login = () => {
-    navigation.navigate('AppMain');
-    // setLoading(true);
-    // setTimeout(async () => {
-    //   setLoading(false);
-    //   let userData = await AsyncStorage.getItem('userData');
-    //   if (userData) {
-    //     userData = JSON.parse(userData);
-    //     if (
-    //       inputs.email == userData.email &&
-    //       inputs.password == userData.password
-    //     ) {
-    //       navigation.navigate('HomeScreen');
-    //       AsyncStorage.setItem(
-    //         'userData',
-    //         JSON.stringify({...userData, loggedIn: true}),
-    //       );
-    //     } else {
-    //       Alert.alert('Error', 'Invalid Details');
-    //     }
-    //   } else {
-    //     Alert.alert('Error', 'User does not exist');
-    //   }
-    // }, 3000);
-  };
+            <Text style={{color: COLORS.black, fontSize: 14, marginTop: 5}}>
+            {item.type} -{item.name}
+            </Text>
+            {/* Location text */}
 
-  const handleOnchange = (text, input) => {
-    setInputs(prevState => ({ ...prevState, [input]: text }));
-  };
-
-  const handleError = (error, input) => {
-    setErrors(prevState => ({ ...prevState, [input]: error }));
+        
+          </View>
+        </View>
+      </Pressable>
+    );
   };
   return (
 
     <SafeAreaView style={{ backgroundColor: COLORS.white, flex: 1 }}>
       {/* <Loader visible={loading} /> */}
-      <View style={{ paddingTop: 50, paddingHorizontal: 20 }}>
+      <ScrollView>
+        <View style={{ paddingTop: 50, paddingHorizontal: 20 }}>
+          <AddCar  reloaddata={()=>getlistCars()}/>
+          < View style={{ marginTop: 30 ,backgroundColor:COLORS.tranparent}} >
+            <FlatList
+              data={Cars}
+              renderItem={({item}) => <Card item={item} />}
+              keyExtractor={item => item.brand}
+              refreshControl={<RefreshControl
+                colors={["#9Bd35A", "#689F38"]}
+                refreshing={refreshing}
+                onRefresh={getlistCars} />}
+            />
+          </View>
 
-        <Text style={{ color: COLORS.black, fontSize: 40, fontWeight: 'bold' }}>
-          Save your car
-        </Text>
-        <Text style={{ color: COLORS.grey, fontSize: 18, marginVertical: 10 }}>
-          Enter Your Car Details 
-        </Text>
-        <View style={{ marginVertical: 20 }}>
-          <Input
-            onChangeText={text => handleOnchange(text, 'email')}
-            onFocus={() => handleError(null, 'email')}
-            iconName="passport"
-            label="Matricule"
-            placeholder="Enter your email address"
-            error={errors.email}
-          />
-          <Input
-            onChangeText={text => handleOnchange(text, 'spassword')}
-            onFocus={() => handleError(null, 'pasdsword')}
-            iconName="ocr"
-            label="Type"
-            placeholder="Enter your password"
-            error={errors.password}
-          />
-             <Input
-            onChangeText={text => handleOnchange(text, 'spassword')}
-            onFocus={() => handleError(null, 'pasdsword')}
-            iconName="pill"
-            label="ability"
-            placeholder="Enter your password"
-            error={errors.password}
-          />
-             <Input
-            onChangeText={text => handleOnchange(text, 'spassword')}
-            onFocus={() => handleError(null, 'pasdsword')}
-            iconName="polaroid"
-            label="Date"
-            placeholder="Enter your password"
-            error={errors.password}
-          />
-          <Button title="Save" onPress={validate} />
-          <Text
-            onPress={() => navigation.navigate('SingUp')}
-            style={{
-              color: COLORS.black,
-              fontWeight: 'bold',
-              textAlign: 'center',
-              fontSize: 16,
-            }}>
-            Don't have account ?Register
-          </Text>
+
+
         </View>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -138,5 +109,88 @@ const LocationsStackNavigator = () => {
     </Stack.Navigator>
   )
 }
-
+const style = StyleSheet.create({
+  header: {
+    paddingVertical: 20,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
+  },
+  profileImage: {
+    height: 50,
+    width: 50,
+    borderRadius: 25,
+  },
+  searchInputContainer: {
+    height: 50,
+    backgroundColor: COLORS.light,
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    borderRadius: 12,
+  },
+  sortBtn: {
+    backgroundColor: COLORS.dark,
+    height: 50,
+    width: 50,
+    borderRadius: 12,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: 10,
+  },
+  optionsCard: {
+    height: 210,
+    width: 70,
+    elevation: 15,
+    alignItems: 'center',
+    backgroundColor: COLORS.white,
+    borderRadius: 20,
+    paddingTop: 10,
+    paddingHorizontal: 10,
+  },
+  optionsCardImage: {
+    height: 140,
+    borderRadius: 10,
+    width: '100%',
+  },
+  optionListsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 20,
+    paddingHorizontal: 20,
+  },
+  categoryListText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    paddingBottom: 5,
+    color: COLORS.grey,
+  },
+  activeCategoryListText: {
+    color: COLORS.dark,
+    borderBottomWidth: 1,
+    paddingBottom: 5,
+  },
+  categoryListContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 40,
+    paddingHorizontal: 40,
+  },
+  card: {
+    height: 100,
+    backgroundColor: COLORS.grey,
+    width: "100%",
+    marginRight: 20,
+    padding: 15,
+    borderRadius: 30,
+  },
+  cardImage: {
+    width: '100%',
+    height: 120,
+    borderRadius: 15,
+  },
+  facility: {flexDirection: 'row', marginRight: 15},
+  facilityText: {marginLeft: 5, color: COLORS.grey},
+});
 export default LocationsStackNavigator

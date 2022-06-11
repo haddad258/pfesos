@@ -36,16 +36,16 @@ const OnBoardScreen = ({navigation}) => {
       <View style={{paddingHorizontal: 20, paddingTop: 20}}>
         {/* Title container */}
         <View>
-          <Text style={style.title}>Urgent call to recharge </Text>
+          <Text style={style.title}>Electric car charging services </Text>
           <Text style={style.title}>the electric car</Text>
         </View>
 
         {/* Text container */}
         <View style={{marginTop: 10}}>
-          <Text style={style.textStyle}>
-            Some description here
+          <Text style={style.textStyle}  onPress={()=>navigation.navigate("ContactStack")}> 
+          A breakdown service to recharge electric cars in  
           </Text>
-          <Text style={style.textStyle}>Dashboard</Text>
+          <Text style={style.textStyle}>the event of discharge on the roads</Text>
         </View>
       </View>
 
@@ -99,7 +99,7 @@ const style = StyleSheet.create({
     alignItems: 'center',
   },
   title: {fontSize: 20, fontWeight: 'bold'},
-  textStyle: {fontSize: 16, color: COLORS.grey},
+  textStyle: {fontSize: 16, justifyContent:"center",color: COLORS.grey},
 });
 
 
