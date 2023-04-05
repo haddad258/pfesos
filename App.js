@@ -1,59 +1,52 @@
-import 'react-native-gesture-handler';
+import * as React from 'react';
+import { View, Text, TouchableOpacity } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import DrawerNavigator from "./navigation/DrawerNavigator";
+import { Login } from './src/service'
+import SplashScreen from './src/Login/SplashScreen'
+import LoginPage from './src/Login/Login'
+import SignIn from './src/Login/SingIn'
+function HomeScreen(props) {
+  return (
+    <TouchableOpacity onPress={() => props.navigation.replace("HommeScreenView")} style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Text>Home Scressen</Text>
+    </TouchableOpacity>
+  );
+}
+
+const Stack = createNativeStackNavigator();
+function App() {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen
+          name="HomeY"
+          component={SplashScreen}
+          options={{ title: 'SplashScreen', headerShown: false }}
+        />
+        <Stack.Screen
+          name="LoginPage"
+          component={LoginPage}
+          options={{ title: 'LoginPage', headerShown: false }}
+        />
+
+        <Stack.Screen
+          name="SignIn"
+          component={SignIn}
+          options={{ title: 'SignIn', headerShown: false }}
+        />
+
+        <Stack.Screen
+          name="HommeScreenView"
+          component={DrawerNavigator}
+          options={{ title: 'Electric car charging services' }}
+        />
 
 
-//import AsyncStorage from '@react-native-community/async-storage';
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+}
 
-import { createSwitchNavigator, createAppContainer } from 'react-navigation';
-import { createStackNavigator } from 'react-navigation-stack';
-
-import SingIn from './src/Landing/SingIn/SingIn';
-import SingUp from './src/Landing/SingUp/SingUp';
-import login from './src/Loin';
-import page1 from './src/page1'
-import page2 from './src/page2';
-import page3 from './src/page3';
-import LoginScreen from './src/crenw';
-import HomeScreen from './src/App'
-
-
-
-
-
-
-export default createAppContainer(
-    createSwitchNavigator({
-        SingIn: createStackNavigator({
-            SingIn: {
-                screen: SingIn,
-                navigationOptions: {
-                    header: null,
-                }
-            },
-        }),
-        SingUp: createStackNavigator({
-            SingUp: {
-                screen: SingUp,
-                navigationOptions: {
-                    header: null
-                }
-            }
-        }),
-        Login: createStackNavigator({
-            Login: {
-                screen: LoginScreen,
-                navigationOptions: {
-                    header: null,
-                }
-            },
-            // ForgotPassword: {
-            //     screen: ForgotPasswordScreen,
-            //     navigationOptions: {
-            //         header: null
-            //     }
-            // }
-        }),
-        AppMain: HomeScreen,
-    }, {
-        initialRouteName: 'SingIn',
-    }, ),
-);
+export default App;
