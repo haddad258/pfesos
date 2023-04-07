@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, Keyboard, Alert } from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, Keyboard, Dimensions,Alert,Image } from 'react-native';
 import Colors from '../../constants/Colors';
 import { Login } from '../service';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 export default function App(props) {
     const [login, setlogin] = useState('migo')
     const [password, setpassword] = useState('jjj')
@@ -30,8 +32,8 @@ export default function App(props) {
         // 
         var data = await Login.Login({
             "action": "auth",
-            "login": "migo",
-            "password": "12654"
+            "login": login,
+            "password": password
         })
         if (data) {
             await AsyncStorage.setItem('userData', data.token).then(() => {
@@ -46,7 +48,7 @@ export default function App(props) {
     }
     return (
         <View style={styles.container}>
-            <Text style={styles.logo}>HeyAPP</Text>
+                 <Image style={{ width: windowWidth-20, height: "15%", alignItems: 'center', margin: 50,paddingHorizontal:20 }} source={require('../../assets/logo.png')} />
             <View style={styles.inputView} >
                 <TextInput
                     style={styles.inputText}
@@ -62,9 +64,9 @@ export default function App(props) {
                     placeholderTextColor="#003f5c"
                     onChangeText={text => setpassword(text)} />
             </View>
-            <TouchableOpacity>
+            {/* <TouchableOpacity>
                 <Text style={styles.forgot}>Forgot Password?</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             <TouchableOpacity onPress={() => validate()} style={styles.loginBtn}>
                 <Text style={styles.loginText}>LOGIN</Text>
             </TouchableOpacity>
@@ -93,7 +95,7 @@ const styles = StyleSheet.create({
     },
     inputView: {
         width: "90%",
-        backgroundColor: Colors.primary,
+        backgroundColor: Colors.accent,
         borderRadius: 5,
         height: 60,
         marginBottom: 20,
@@ -111,7 +113,7 @@ const styles = StyleSheet.create({
     },
     loginBtn: {
         width: "50%",
-        backgroundColor: Colors.listed,
+        backgroundColor: Colors.accent,
         borderRadius: 10,
         height: 50,
         alignItems: "center",

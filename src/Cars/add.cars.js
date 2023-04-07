@@ -5,6 +5,7 @@ import COLORS from '../../constants/Colors';
 import Input from '../../components/Inputs';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Cars_Managment, MangementToken } from '../service'
+import Colors from '../../constants/Colors';
 
 
 function AddCar(props) {
@@ -43,6 +44,11 @@ function AddCar(props) {
     console.log("getlistCars", token)
     var list = await Cars_Managment.RegisterCars({...inputs, "action": "new_car","token":token})
     console.log("ListCars",  list)
+    if(list){
+      props.refresh()
+      changeexpanded()
+
+    }
 
   };
 
@@ -62,8 +68,8 @@ function AddCar(props) {
 
 
   return (
-    <View >
-      <Text onPress={() => changeexpanded()} >  Add Car  <Icon name={expanded ? "arrow-drop-down" : "arrow-right"} size={40} color={COLORS.primary} > </Icon>
+    <View style={{backgroundColor: Colors.accent ,}}  >
+      <Text style={{fontSize:15 ,alignContent:'center'}}  onPress={() => changeexpanded()} >    <Icon name={expanded ? "arrow-drop-down" : "add-box"} size={50} color={COLORS.primary} ></Icon>
       </Text>
       <Collapse
         isExpanded={expanded}
@@ -77,15 +83,15 @@ function AddCar(props) {
             <View style={{ paddingHorizontal: 20 }}>
 
               <Text style={{ color: COLORS.grey, fontSize: 18, }}>
-                Enter Your Car Details
+                Enter Your Vehicule Details
               </Text>
               <View style={{ marginVertical: 20 }}>
                 <Input
                   onChangeText={text => handleOnchange(text, 'brand')}
                   onFocus={() => handleError(null, 'brand')}
                   iconName="passport"
-                  label="brand"
-                  placeholder="Enter your brand address"
+                  label="Brand"
+                  placeholder="Enter your brand"
                   error={errors.brand}
                 />
                 <Input
@@ -100,19 +106,19 @@ function AddCar(props) {
                   onChangeText={text => handleOnchange(text, 'name')}
                   onFocus={() => handleError(null, 'name')}
                   iconName="pill"
-                  label="ability"
-                  placeholder="Enter your name"
+                  label="Name"
+                  placeholder="Enter  name"
                   error={errors.name}
                 />
                 <Input
                   onChangeText={text => handleOnchange(text, 'registration')}
                   onFocus={() => handleError(null, 'registration')}
                   iconName="polaroid"
-                  label="registration"
+                  label="Registration"
                   placeholder="Enter your registration"
                   error={errors.registration}
                 />
-                {/* <Button title="Save" onPress={validate} /> */}
+                <Button title="Save"  color={COLORS.primary} onPress={()=>validate()} /> 
 
               </View>
             </View>

@@ -50,7 +50,7 @@ export default function App(props) {
             {
                 currentStep === 2 && <TouchableOpacity
                     onPress={() => props.navigation.replace("LoginPage")}
-                    style={{ ...styles.navigationBtn, backgroundColor: Colors.listed, width: "30%", borderRadius: 20 }}>
+                    style={{ ...styles.navigationBtn, backgroundColor: Colors.secondary, width: "30%", borderRadius: 20 }}>
                     <Text style={styles.navigationBtnTxt}>login</Text>
                 </TouchableOpacity>
 

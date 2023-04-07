@@ -5,25 +5,25 @@ import {
     Text,
     View,
     TouchableOpacity,
-    Image,
-    ActivityIndicator,
     RefreshControl,
+    ActivityIndicator,
     ScrollView,
     FlatList,
 } from 'react-native';
-import Colors from '../../constants/Colors';
-import AddCar from './add.cars';
-import { Cars_Managment, MangementToken } from '../../src/service'
-import CardCar from './ViewCars'
-// import {CheckBox} from 'react-native-elements';
-
+import Colors from '../../../constants/Colors';
+import { ReservationManagement, MangementToken } from '../../../src/service'
+import Item from './ViewIndex';
 export default function Cars(props) {
+
     const [active, setactive] = useState(true)
     const [list, setlist] = useState([])
     const getList = async () => {
-
-        var list = await Cars_Managment.ListCars({
-            "action": "mycars",
+        console.log({
+            "action": "all_emergency",
+            "token": await MangementToken.GetConfigSession()
+        })
+        var list = await ReservationManagement.Listbook({
+            "action": "all_emergency",
             "token": await MangementToken.GetConfigSession()
         })
         if (list) {
@@ -33,43 +33,40 @@ export default function Cars(props) {
             setactive(false)
 
         }
-        console.log(list)
+        console.log(list.length)
 
     }
 
     useEffect(() => {
         getList()
 
+        console.log(" getList()")
 
     }, [])
 
-   
-    return (
-        <View style={{ flex: 1 , padding:5}} >
-            <ScrollView>
-                <Text
-                    style={{
-                        fontSize: 26,
-                        color: Colors.black,
-                        textAlign: 'center',
-                        marginBottom: 30,
-                        marginTop: 10,
-                    }}>
-                   ({list.length}): vehicle list
-                </Text>
-                <AddCar refresh={() => getList()} />
-                {active && <ActivityIndicator size="large" color="#00ff00" />}
 
-                <FlatList
-                    data={list}
-                    keyExtractor={(item) => {
-                        return item.id;
-                    }}
-                    refreshControl={<RefreshControl refreshing={active} onRefresh={() => getList()} />}
-                    renderItem={({ item }) => (
-                        <CardCar item={item} props={props} refresh={() => getList()} />
-                    )} />
-                    </ScrollView>
+
+
+    return (
+        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }} >
+            <Text
+                style={{
+                    fontSize: 26,
+                    color: Colors.black,
+                    textAlign: 'center',
+                    marginBottom: 30,
+                    marginTop: 10,
+                }}>
+                  {list.length} :requests
+            </Text>
+            {active && <ActivityIndicator size="large" color="#00ff00" />}
+
+            <FlatList
+                data={list}
+                renderItem={({ item }) => (<Item item={item} props={props} />)}
+                keyExtractor={item => item.id}
+                refreshControl={<RefreshControl refreshing={active}  onRefresh={() => getList()} />}
+            />
         </View>
     );
 }

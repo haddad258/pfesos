@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, Keyboard, Alert } from 'react-native';
+import { StyleSheet, Text,Dimensions, View, TextInput, TouchableOpacity, Keyboard, Alert, Image } from 'react-native';
 import Colors from '../../constants/Colors';
 import { Login } from '../service';
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 import AsyncStorage from '@react-native-async-storage/async-storage';
 export default function App(props) {
     const [login, setlogin] = useState('migo')
     const [password, setpassword] = useState('')
     const [username, setusername] = useState('')
-    
+
 
     const validate = async () => {
 
@@ -36,16 +38,16 @@ export default function App(props) {
         // 
         var data = await Login.Login({
             "action": "new_user",
-            "email": "migo",
-            "password": "12654",
-            "username":username
+            "email": login,
+            "password": password,
+            "username": username
         })
-        
-        if (data) {
-          console.log(data)
-          Alert.alert("Saved ", "cridential saved success")
 
-          props.navigation.replace("LoginPage")
+        if (data) {
+            console.log(data)
+            Alert.alert("Saved ", "cridential saved success")
+
+            props.navigation.replace("LoginPage")
         } else {
             Alert.alert("Wrong login ", "The cridential you’ve entered is incorrect")
 
@@ -55,7 +57,8 @@ export default function App(props) {
     }
     return (
         <View style={styles.container}>
-            <Text style={styles.logo}>HeyAPP</Text>
+            <Image style={{ width: windowWidth - 20, height: "15%", alignItems: 'center', margin: 50, paddingHorizontal: 20 }} source={require('../../assets/logo.png')} />
+
             <View style={styles.inputView} >
                 <TextInput
                     style={styles.inputText}
@@ -78,13 +81,13 @@ export default function App(props) {
                     placeholderTextColor="#003f5c"
                     onChangeText={text => setusername(text)} />
             </View>
-            <TouchableOpacity onPress={()=> props.navigation.replace("LoginPage")} >
+            <TouchableOpacity onPress={() => props.navigation.replace("LoginPage")} >
                 <Text style={styles.forgot}>you have aacount</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => validate()} style={styles.loginBtn}>
-                <Text style={styles.loginText}>LOGIN</Text>
+                <Text style={styles.loginText}>Create</Text>
             </TouchableOpacity>
-          
+
 
         </View>
     );
@@ -106,7 +109,7 @@ const styles = StyleSheet.create({
     },
     inputView: {
         width: "90%",
-        backgroundColor: Colors.primary,
+        backgroundColor: Colors.accent,
         borderRadius: 5,
         height: 60,
         marginBottom: 20,
@@ -124,7 +127,7 @@ const styles = StyleSheet.create({
     },
     loginBtn: {
         width: "50%",
-        backgroundColor: Colors.listed,
+        backgroundColor: Colors.accent,
         borderRadius: 10,
         height: 50,
         alignItems: "center",

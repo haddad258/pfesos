@@ -1,0 +1,23 @@
+[
+    {
+        "brand": "Fiat",
+        "id": 22700,
+        "name": "Fiat 500",
+        "registration": "102-fr-525620",
+        "type": "cp"
+    },
+    {
+        "brand": "Renault",
+        "id": 22663,
+        "name": "Clio",
+        "registration": "127 RU 1251JES",
+        "type": "SV"
+    },
+    {
+        "brand": "Tesla",
+        "id": 22753,
+        "name": "Tesla model S",
+        "registration": "hfjdsh-24fdsf",
+        "type": "SUV"
+    }
+]

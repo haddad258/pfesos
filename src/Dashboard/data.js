@@ -11,48 +11,36 @@ export const Supplierdata = [
 
 
     },
-    {
-        id: "Ka",
-        name: 'Services',
-        date: 'Mardi:27-04-2023',
-        screen: "Cars",
-        price: "456 dt",
-        total: "3",
-        numero: "20738357",
-        uri: "https://i.ibb.co/fQZNSKW/servicess.png"
-
-
-
-    },
+   
     {
         id: "Kb",
-        name: 'Demande de secours',
+        name: 'Help request',
         date: 'Jeudi:21-04-2023',
-        screen: "Cars",
+        screen: "Reservation",
         price: "309 dt",
         total: "28",
         numero: "20738357",
         uri: "https://i.ibb.co/dMVyQmb/demandd.jpg"
 
     },
+    // {
+    //     id: "KIaz",
+    //     name: 'Edit Info',
+    //     date: 'samed :22-04-2023',
+    //     screen: "nanan",
+    //     price: "500 dt",
+    //     total: "78",
+    //     numero: "20738357",
+    //     uri: "https://i.ibb.co/HLZmnfT/imagezinfos.png"
+
+
+
+    // },
     {
         id: "KIaz",
-        name: 'Modifier Info',
+        name: 'MarketPlace',
         date: 'samed :22-04-2023',
-        screen: "Cars",
-        price: "500 dt",
-        total: "78",
-        numero: "20738357",
-        uri: "https://i.ibb.co/HLZmnfT/imagezinfos.png"
-
-
-
-    },
-    {
-        id: "KIaz",
-        name: 'produits',
-        date: 'samed :22-04-2023',
-        screen: "7,7 km",
+        screen: "MarketPlace",
         price: "500 dt",
         total: "78",
         numero: "20738357",
@@ -63,9 +51,9 @@ export const Supplierdata = [
     },
     {
         id: "KIaz",
-        name: 'Solde KWH',
+        name: 'Pay KWH',
         date: 'samed :22-04-2023',
-        screen: "Cars",
+        screen: "MyBalance",
         price: "500 dt",
         total: "78",
         numero: "20738357",
