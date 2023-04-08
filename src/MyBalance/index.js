@@ -89,7 +89,7 @@ export default function App(props) {
             <TouchableOpacity
                 style={[styles.badge, { width:"80%", marginTop:50,backgroundColor: Colors.primary }]}
                 onPress={() => AcceptPayement()} >
-            <Text style={styles.newinputt}> new Blance Paument </Text>
+            <Text style={styles.newinputt}> new Blance Payment </Text>
             </TouchableOpacity>
 
 
