@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, TextInput, ActivityIndicator, Keyboard, Alert, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Linking, ActivityIndicator, Keyboard, Alert, TouchableOpacity } from 'react-native';
 import Colors from '../../constants/Colors';
 import FontAwesome from "react-native-vector-icons/FontAwesome5";
 
@@ -38,8 +38,8 @@ export default function App(props) {
     }
     const AcceptPayement = async () => {
 
-        alert(number)
-
+        // alert("http://site.yasmineinfo.com/produit/recharge-solde-kwh")
+        Linking.openURL("http://site.yasmineinfo.com/produit/recharge-solde-kwh")
         // var list = await Cars_Managment.ListCars({
         //     "action": "my_balance",
         //     token: await MangementToken.GetConfigSession()
@@ -57,53 +57,27 @@ export default function App(props) {
     return (
         <View style={styles.container}>
 
-<TextInput
-                        style={styles.input}
-                        onChangeText={(e) => setnewnumber(e)}
-                        value={number}
-                        placeholder="My balance"
-                        keyboardType="numeric"
-                    />
-            <View style={{ flexDirection: "row", justifyContent: "space-between" }}  >
-                <TouchableOpacity
-                    style={[styles.badge, { backgroundColor: "#dc1e04" }]}
-                    onPress={() => setnewnumber(number - 1)} >
-                    <FontAwesome name="minus" color="black" size={20} />
-
-                </TouchableOpacity>
-                <View style={{justifyContent:"center", alignContent:"center",alignItems:"center"}}  >
-
-                    <Text style={styles.newinput} > {number}  </Text>
-                </View>
-
-                <TouchableOpacity
-                    style={[styles.badge, { backgroundColor: "#048adc" }]}
-                    onPress={() => setnewnumber(number + 1)} >
-                    <FontAwesome name="plus" color="black" size={20} />
-
-                </TouchableOpacity>
+         
+            
+         
+           
 
 
-
-            </View>
-            <TouchableOpacity
-                style={[styles.badge, { width:"80%", marginTop:50,backgroundColor: Colors.primary }]}
-                onPress={() => AcceptPayement()} >
-            <Text style={styles.newinputt}> new Blance Payment </Text>
-            </TouchableOpacity>
-
-
+            <Text style={styles.logo}>My Pay KWH</Text>
+            {active && <ActivityIndicator size="large" color="#00ff00" />}
+            <Text style={styles.logoo}>{KWH}</Text>
             <View style={{
                 borderWidth: 0.5,
                 borderColor: 'black',
                 margin: 10,
                 width: "100%"
             }} />
+            <TouchableOpacity
+                style={[styles.badge, { width: "80%", marginTop: 50, backgroundColor: Colors.primary }]}
+                onPress={() => AcceptPayement()} >
+                <Text style={styles.newinputt}> new  Payment </Text>
+            </TouchableOpacity>
 
-
-            <Text style={styles.logo}>My Pay KWH</Text>
-            {active && <ActivityIndicator size="large" color="#00ff00" />}
-            <Text style={styles.logoo}>{KWH}</Text>
 
         </View>
     );
@@ -150,20 +124,20 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         fontSize: 20,
         color: Colors.secondary,
-        justifyContent:'center',
-        alignItems:'center',
-        textAlign:'center',
-        textAlignVertical:'center'
+        justifyContent: 'center',
+        alignItems: 'center',
+        textAlign: 'center',
+        textAlignVertical: 'center'
 
     },
     newinputt: {
         fontWeight: "bold",
         fontSize: 20,
         color: "white",
-        justifyContent:'center',
-        alignItems:'center',
-        textAlign:'center',
-        textAlignVertical:'center'
+        justifyContent: 'center',
+        alignItems: 'center',
+        textAlign: 'center',
+        textAlignVertical: 'center'
 
     },
 
